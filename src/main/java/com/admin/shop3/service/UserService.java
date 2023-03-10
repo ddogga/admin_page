@@ -29,14 +29,14 @@ public class UserService {
      */
     @Transactional
     public User join(UserForm form, Role role){
-        validateDuplicateMember(form.getName());
+        validateDuplicateMember(form.getId());
         User user = buildUser(form, role);
         return userRepository.save(user);
     }
 
     private User buildUser(UserForm form, Role role){
         User user = User.builder()
-                .name(form.getName())
+                .name(form.getId())
                 .password(form.getPassword())
                 .role(role)
                 .build();
@@ -52,19 +52,21 @@ public class UserService {
         }
     }
 
-    public String login(LoginForm form) {
-        User findUser = userRepository.findOneByName(form.getName());
+    public int login(LoginForm form) {
+        User findUser = userRepository.findOneByName(form.getId());
         if (findUser == null) {
-            return "아이디가 일치하지 않습니다.";
+            return -1;
         }
 
         if(!form.getPassword().equals(findUser.getPassword())){
-            return "비밀번호가 일치하지 않습니다.";
+            return 0;
         }
 
         httpSession.setAttribute("user", new SessionUser(findUser));
-        return "로그인 성공";
+        return 1;
     }
+
+
 
 
 
