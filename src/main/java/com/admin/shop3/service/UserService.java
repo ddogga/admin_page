@@ -66,6 +66,16 @@ public class UserService {
         return 1;
     }
 
+    @Transactional
+    public int delete(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            userRepository.delete(user.get());
+            return 1;
+        }
+        return 0;
+    }
+
 
 
 

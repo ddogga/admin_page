@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-    @GetMapping("get_session")
+    @GetMapping("/get_session")
     public String getSession(HttpSession session){
         SessionUser user = (SessionUser) session.getAttribute("user");
         return user.getName();
