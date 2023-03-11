@@ -1,16 +1,16 @@
 package com.admin.shop3.controller;
 
 import com.admin.shop3.entity.Item;
+import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,6 +18,7 @@ import java.util.Optional;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemRepository itemRepository;
 
     @PostMapping("/items/new")
     public ResponseEntity create(@RequestBody ItemForm form) {
@@ -35,5 +36,24 @@ public class ItemController {
     @GetMapping("/item/income_ranking")
     private ResponseEntity getItemRanking() {
         return ResponseEntity.of(Optional.ofNullable(itemService.getSalesTop5Items()));
+    }
+
+    @GetMapping("/items")
+    private ResponseEntity getAllItem() {
+        return ResponseEntity.of(Optional.ofNullable(itemRepository.findAll()));
+    }
+
+    @DeleteMapping("/item")
+    public Map<String, Object> deleteItem(Long id) {
+        Map<String, Object> response = new HashMap<>();
+
+        if(itemService.delete(id) > 0) {
+            response.put("result", "SUCCESS");
+        }else {
+            response.put("result", "FAIL");
+            response.put("reason", "일치하는 상품이 없습니다.");
+        }
+
+        return response;
     }
 }
