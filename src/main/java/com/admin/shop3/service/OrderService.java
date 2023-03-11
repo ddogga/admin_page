@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +36,7 @@ public class OrderService {
      * */
 
     @Transactional
-    public Order order(OrderForm orderForm) {
+    public String order(OrderForm orderForm) {
 
         //엔티티 조회
         User user = userRepository.findById(orderForm.getUserId())
@@ -43,10 +46,11 @@ public class OrderService {
         List<OrderItem> orderItems = getOrderItems(orderForm.getOrderedItems());
 
         //주문 생성
-        Order order = Order.createOrder(user, orderItems);
+        Order order = Order.createOrder(user, orderItems,getTotalPrice(orderItems));
 
         orderRepository.save(order);
-        return order;
+
+        return "주문 완료";
     }
 
     private Item getItem(Long itemId){
@@ -62,5 +66,42 @@ public class OrderService {
             orderItems.add(newOrderItem);
         }
         return orderItems;
+    }
+
+    private int getTotalPrice(List<OrderItem> orderItemList){
+        int totalPrice = 0;
+        for(OrderItem orderItem : orderItemList) {
+
+            totalPrice += orderItem.getOrderItemPrice() * orderItem.getCount();
+        }
+        return totalPrice;
+    }
+
+    public Long getIncomeMonthly(){
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().withDayOfMonth(1), LocalTime.of(0,0,0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
+
+        final Long[] totalPrice = {0L};
+
+        orderRepository.findAllByOrderTimeBetween(start,end)
+                .stream()
+                .forEach(order -> totalPrice[0] += order.getTotalPrice());
+
+
+        return totalPrice[0];
+    }
+
+    public Long getIncomeAnnual(){
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().withMonth(1).withDayOfMonth(1), LocalTime.of(0,0,0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
+
+        final Long[] totalPrice = {0L};
+
+        orderRepository.findAllByOrderTimeBetween(start,end)
+                .stream()
+                .forEach(order -> totalPrice[0] += order.getTotalPrice());
+
+
+        return totalPrice[0];
     }
 }

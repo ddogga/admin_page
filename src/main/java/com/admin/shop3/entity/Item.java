@@ -3,12 +3,15 @@ package com.admin.shop3.entity;
 
 import com.admin.shop3.repository.NotEnoughStockException;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Item {
 
     @Id
@@ -25,10 +28,18 @@ public class Item {
     @Column(name = "sales_quantity")
     private int salesQuantity;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "category_id")
+//    private Category category;
 
+
+    @Builder
+    public Item(String name, int price, int stockQuantity, int salesQuantity) {
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.salesQuantity = salesQuantity;
+    }
 
     /**
      * stock 감소
@@ -39,6 +50,15 @@ public class Item {
             throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity = restStock;
+    }
+
+    /**
+     * sales_quantity 증가
+     *
+     */
+
+    public void increaseSales(int quantity){
+        this.salesQuantity += quantity;
     }
 
 }

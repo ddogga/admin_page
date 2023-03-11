@@ -4,11 +4,13 @@ package com.admin.shop3.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class OrderItem {
 
     @Id
@@ -45,6 +47,7 @@ public class OrderItem {
                 .build();
 
         item.removeStock(count); //주문 들어온 수량 만큼 재고에서 빼기
+        item.increaseSales(count);
         return orderItem;
     }
 
