@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -30,8 +32,8 @@ public class ItemController {
         return ResponseEntity.ok(itemService.saveItem(item));
     }
 
-//    @GetMapping("/item/incom_ranking")
-//    private List<Item> getItemRanking() {
-//
-//    }
+    @GetMapping("/item/income_ranking")
+    private ResponseEntity getItemRanking() {
+        return ResponseEntity.of(Optional.ofNullable(itemService.getSalesTop5Items()));
+    }
 }
