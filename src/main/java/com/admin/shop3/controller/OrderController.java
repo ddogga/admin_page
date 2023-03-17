@@ -29,21 +29,5 @@ public class OrderController {
         return orderService.order(orderForm);
     }
 
-    @GetMapping("/income/monthly")
-    public Map<String, Object> getMonthly() {
-        Map<String, Object> response = new HashMap<>();
 
-        Long income = orderService.getIncomeMonthly();
-        System.out.println(income);
-        response.put("result", income);
-
-        return response;
-    }
-
-    @GetMapping("/income/annual")
-    public Long getAnnual() {
-        Long income = orderService.getIncomeAnnual();
-
-        return income;
-    }
 }

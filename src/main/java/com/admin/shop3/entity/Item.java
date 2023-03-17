@@ -22,11 +22,19 @@ public class Item {
     private  String name;
     private int price;
 
+    /**
+     * 상품 원가
+     */
+    @Column(name = "item_cost")
+    private int itemCost;
+
     @Column(name = "stock_quantity")
     private int stockQuantity;
 
     @Column(name = "sales_quantity")
     private int salesQuantity;
+
+
 
 //    @ManyToOne(fetch = LAZY)
 //    @JoinColumn(name = "category_id")
@@ -34,9 +42,10 @@ public class Item {
 
 
     @Builder
-    public Item(String name, int price, int stockQuantity, int salesQuantity) {
+    public Item(String name, int price, int stockQuantity, int salesQuantity, int itemCost) {
         this.name = name;
         this.price = price;
+        this.itemCost = itemCost;
         this.stockQuantity = stockQuantity;
         this.salesQuantity = salesQuantity;
     }

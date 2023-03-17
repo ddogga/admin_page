@@ -1,15 +1,14 @@
 package com.admin.shop3.controller;
 
+import com.admin.shop3.dto.ItemForm;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,6 +25,7 @@ public class ItemController {
         Item item = Item.builder()
                 .name(form.getName())
                 .price(form.getPrice())
+                .itemCost(form.getItemCost())
                 .stockQuantity(form.getStockQuantity())
                 .salesQuantity(0)
                 .build();

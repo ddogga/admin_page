@@ -77,31 +77,5 @@ public class OrderService {
         return totalPrice;
     }
 
-    public Long getIncomeMonthly(){
-        LocalDateTime start = LocalDateTime.of(LocalDate.now().withDayOfMonth(1), LocalTime.of(0,0,0));
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
 
-        final Long[] totalPrice = {0L};
-
-        orderRepository.findAllByOrderTimeBetween(start,end)
-                .stream()
-                .forEach(order -> totalPrice[0] += order.getTotalPrice());
-
-
-        return totalPrice[0];
-    }
-
-    public Long getIncomeAnnual(){
-        LocalDateTime start = LocalDateTime.of(LocalDate.now().withMonth(1).withDayOfMonth(1), LocalTime.of(0,0,0));
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
-
-        final Long[] totalPrice = {0L};
-
-        orderRepository.findAllByOrderTimeBetween(start,end)
-                .stream()
-                .forEach(order -> totalPrice[0] += order.getTotalPrice());
-
-
-        return totalPrice[0];
-    }
 }
