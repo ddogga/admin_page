@@ -31,7 +31,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @PostMapping("/users/admin/new")
+    @PostMapping("/user/admin/new")
     public ResponseEntity create(@RequestBody @Valid UserForm form, BindingResult result) {
 
         if(result.hasErrors()) {
@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/users/idcheck")
+    @GetMapping("/user/idcheck")
     public int idCheck(String id) {
         User user = userRepository.findOneByName(id);
         if (user == null) {return 0;}
@@ -50,20 +50,20 @@ public class UserController {
     }
 
 
-    @PostMapping("/users/admin/login")
+    @PostMapping("/user/admin/login")
     public int login(@RequestBody LoginForm form) {
 
         return userService.login(form);
     }
 
-    @PostMapping("/users/logout")
+    @PostMapping("/user/logout")
     public void logout(HttpSession session) {
         log.info("로그아웃");
         session.invalidate();
     }
 
 
-    @GetMapping("/users/role_users")
+    @GetMapping("/user/role_users")
     public ResponseEntity getUsers(String role){
         GetUserResponseDto getUserResponseDto = new GetUserResponseDto();
         if (role.equals("user")) {
@@ -72,7 +72,7 @@ public class UserController {
         return ResponseEntity.ok(userRepository.findAllByRole(Role.ADMIN));
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping("/user")
     public Map<String, Object> deleteUser(Long id) {
         Map<String, Object> response = new HashMap<>();
 

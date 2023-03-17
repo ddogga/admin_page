@@ -19,7 +19,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
 
-    @PostMapping("/items/new")
+    @PostMapping("/item/new")
     public ResponseEntity create(@RequestBody ItemForm form) {
 
         Item item = Item.builder()

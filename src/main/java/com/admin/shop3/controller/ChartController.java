@@ -3,6 +3,7 @@ package com.admin.shop3.controller;
 
 import com.admin.shop3.service.ChartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,10 @@ public class ChartController {
 
     private final ChartService chartService;
 
+    /**
+     * 이번달 매출 조회
+     *
+     */
     @GetMapping("/income/monthly")
     public Map<String, Object> getMonthly() {
         Map<String, Object> response = new HashMap<>();
@@ -26,10 +31,23 @@ public class ChartController {
         return response;
     }
 
+    /**
+     * 이번 년도 매출 조회
+     * @return
+     */
+
     @GetMapping("/income/annual")
     public Long getAnnual() {
         Long income = chartService.getIncomeAnnual();
 
         return income;
     }
+
+
+//    @GetMapping("/incomes/monthly")
+//    public ResponseEntity getIncomesMonthly() {
+//
+//    }
+
+
 }

@@ -71,7 +71,6 @@ public class OrderService {
     private int getTotalPrice(List<OrderItem> orderItemList){
         int totalPrice = 0;
         for(OrderItem orderItem : orderItemList) {
-
             totalPrice += orderItem.getOrderItemPrice() * orderItem.getCount();
         }
         return totalPrice;

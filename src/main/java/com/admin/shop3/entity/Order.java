@@ -7,7 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,10 +41,18 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    // =====================
+    // ===========================
+
+
+    // ======== 주문 시간 ===========
+    @Column(name = "order_date")
+    private LocalDate orderDate;
 
     @Column(name = "order_time")
-    private LocalDateTime orderTime;
+    private LocalTime orderTime;
+
+
+    // =============================
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -50,8 +61,9 @@ public class Order {
     private int totalPrice;
 
     @Builder
-    public Order(User user, LocalDateTime orderTime, OrderStatus status, int totalPrice) {
+    public Order(User user, LocalDate orderDate, LocalTime orderTime, OrderStatus status, int totalPrice) {
         this.user = user;
+        this.orderDate = orderDate;
         this.orderTime = orderTime;
         this.status = status;
         this.totalPrice = totalPrice;
@@ -64,7 +76,8 @@ public class Order {
         Order order = Order.builder()
                 .user(user)
                 .status(OrderStatus.ORDER)
-                .orderTime(LocalDateTime.now())
+                .orderDate(LocalDate.now())
+                .orderTime(LocalTime.now())
                 .totalPrice(totalPrice)
                 .build();
 

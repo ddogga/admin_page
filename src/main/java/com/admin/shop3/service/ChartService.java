@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,30 +18,34 @@ public class ChartService {
     private final OrderRepository orderRepository;
 
     public Long getIncomeMonthly(){
-        LocalDateTime start = LocalDateTime.of(LocalDate.now().withDayOfMonth(1), LocalTime.of(0,0,0));
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
+        LocalDate now = LocalDate.now();
+        LocalDate start = LocalDate.of(now.getYear(),now.getMonth(),1);
+        LocalDate end = now;
 
         final Long[] totalPrice = {0L};
 
-        orderRepository.findAllByOrderTimeBetween(start,end)
+        orderRepository.findAllByOrderDateBetween(start,end)
                 .stream()
                 .forEach(order -> totalPrice[0] += order.getTotalPrice());
-
 
         return totalPrice[0];
     }
 
     public Long getIncomeAnnual(){
-        LocalDateTime start = LocalDateTime.of(LocalDate.now().withMonth(1).withDayOfMonth(1), LocalTime.of(0,0,0));
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59));
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate start = LocalDate.of(now.getYear(),1,1);
+        LocalDate end = LocalDate.of(now.getYear(), 12,31);
 
         final Long[] totalPrice = {0L};
 
-        orderRepository.findAllByOrderTimeBetween(start,end)
+        orderRepository.findAllByOrderDateBetween(start,end)
                 .stream()
                 .forEach(order -> totalPrice[0] += order.getTotalPrice());
 
-
         return totalPrice[0];
     }
+
+//    public List<Long> getIncomesMonthly() {
+//
+//    }
 }
