@@ -1,6 +1,8 @@
 package com.admin.shop3.service;
 
+import com.admin.shop3.dto.MonthItemCostSum;
 import com.admin.shop3.dto.MonthOrderSum;
+import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,7 +21,7 @@ import java.util.List;
 public class ChartService {
 
     private final OrderRepository orderRepository;
-
+    private final ItemRepository itemRepository;
     public Long getIncomeMonthly(){
         LocalDate now = LocalDate.now();
         LocalDate start = LocalDate.of(now.getYear(),now.getMonth(),1);
@@ -47,12 +51,28 @@ public class ChartService {
     }
 
     public List<MonthOrderSum> getIncomesMonthly() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         LocalDate start = LocalDate.of(now.getYear()-1,now.getMonthValue()+1,1);
-        LocalDate end = LocalDate.of(now.getYear(), now.getMonthValue(),now.getDayOfMonth());
 
-        return orderRepository.findGroupByOrderWithJPQL(start,end);
+        List<MonthItemCostSum> monthItemCostSums = itemRepository.findGroupByItemWithJPQL(start,now);
+        List<MonthOrderSum> monthOrderSums = new ArrayList<>();
+
+        int i = 0;
+        if (monthItemCostSums.size() > 0) {
+            monthOrderSums = orderRepository.findGroupByOrderWithJPQL(start,now);
+
+            for(MonthOrderSum orderSum : monthOrderSums) {
+                orderSum.setTotalProfit(monthItemCostSums.get(i).getTotalProfit());
+                i++;
+            }
+
+        }
+
+
+        return monthOrderSums;
     }
+
+
 
 
 }

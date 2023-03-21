@@ -35,9 +35,9 @@ public class ItemController {
         return ResponseEntity.ok(itemService.saveItem(item));
     }
 
-    @GetMapping("/item/income_ranking")
+    @GetMapping("/item/ranking")
     private ResponseEntity getItemRanking() {
-        return ResponseEntity.of(Optional.ofNullable(itemService.getSalesTop5Items()));
+        return ResponseEntity.of(Optional.ofNullable(itemService.getSalesTop10Items()));
     }
 
     @GetMapping("/items")

@@ -24,12 +24,10 @@ public class ItemService {
         return newItem;
     }
 
-    public List<Item> getSalesTop5Items () {
+    public List<Item> getSalesTop10Items () {
 
-        List<Item> items = itemRepository.findAllByOrderBySalesQuantityDesc()
-                .stream()
-                .limit(5)
-                .collect(Collectors.toList());
+        List<Item> items = itemRepository.findAllTop10ByOrderBySalesQuantityDesc();
+
         return items;
     }
 

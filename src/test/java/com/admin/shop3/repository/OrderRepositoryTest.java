@@ -22,8 +22,6 @@ class OrderRepositoryTest {
     @Autowired
     OrderRepository orderRepository;
 
-    @Autowired
-    ChartService chartService;
 
     @Test
     public void 달별_매출_조회() throws Exception {
