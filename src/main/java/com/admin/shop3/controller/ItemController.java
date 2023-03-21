@@ -2,6 +2,7 @@ package com.admin.shop3.controller;
 
 import com.admin.shop3.dto.ItemForm;
 import com.admin.shop3.entity.Item;
+import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class ItemController {
                 .itemCost(form.getItemCost())
                 .stockQuantity(form.getStockQuantity())
                 .salesQuantity(0)
+                .itemStatus(ItemStatus.OS)
                 .build();
 
         return ResponseEntity.ok(itemService.saveItem(item));
@@ -43,8 +45,8 @@ public class ItemController {
         return ResponseEntity.of(Optional.ofNullable(itemRepository.findAll()));
     }
 
-    @DeleteMapping("/item")
-    public Map<String, Object> deleteItem(Long id) {
+    @PutMapping("/item")
+    public Map<String, Object> updateItem(Long id) {
         Map<String, Object> response = new HashMap<>();
 
         if(itemService.delete(id) > 0) {

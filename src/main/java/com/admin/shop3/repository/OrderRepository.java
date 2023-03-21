@@ -25,4 +25,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     "HAVING or.orderDate BETWEEN :start AND :end"
     )
     List<MonthOrderSum> findGroupByOrderWithJPQL(LocalDate start, LocalDate end);
+
+
+
+
 }

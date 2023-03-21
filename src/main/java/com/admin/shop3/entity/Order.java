@@ -72,7 +72,6 @@ public class Order {
     // 생성 메서드
     public static Order createOrder(User user, List<OrderItem> orderItems, int totalPrice) {
 
-
         Order order = Order.builder()
                 .user(user)
                 .status(OrderStatus.ORDER)

@@ -1,5 +1,6 @@
 package com.admin.shop3.service;
 
+import com.admin.shop3.dto.MonthOrderSum;
 import com.admin.shop3.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,13 @@ public class ChartService {
         return totalPrice[0];
     }
 
-//    public List<Long> getIncomesMonthly() {
-//
-//    }
+    public List<MonthOrderSum> getIncomesMonthly() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate start = LocalDate.of(now.getYear()-1,now.getMonthValue()+1,1);
+        LocalDate end = LocalDate.of(now.getYear(), now.getMonthValue(),now.getDayOfMonth());
+
+        return orderRepository.findGroupByOrderWithJPQL(start,end);
+    }
+
+
 }

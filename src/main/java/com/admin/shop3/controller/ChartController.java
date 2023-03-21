@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,10 +45,10 @@ public class ChartController {
     }
 
 
-//    @GetMapping("/incomes/monthly")
-//    public ResponseEntity getIncomesMonthly() {
-//
-//    }
+    @GetMapping("/incomes/monthly")
+    public ResponseEntity getIncomesMonthly() {
+        return ResponseEntity.of(Optional.ofNullable(chartService.getIncomesMonthly()));
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.admin.shop3.entity;
 
 
+import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.NotEnoughStockException;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -23,6 +24,11 @@ public class Item {
     private int price;
 
     /**
+     * 상품 단종 여부
+     */
+    private ItemStatus itemStatus;
+
+    /**
      * 상품 원가
      */
     @Column(name = "item_cost")
@@ -42,12 +48,13 @@ public class Item {
 
 
     @Builder
-    public Item(String name, int price, int stockQuantity, int salesQuantity, int itemCost) {
+    public Item(String name, int price, int stockQuantity, int salesQuantity, int itemCost, ItemStatus itemStatus) {
         this.name = name;
         this.price = price;
         this.itemCost = itemCost;
         this.stockQuantity = stockQuantity;
         this.salesQuantity = salesQuantity;
+        this.itemStatus = itemStatus;
     }
 
     /**
