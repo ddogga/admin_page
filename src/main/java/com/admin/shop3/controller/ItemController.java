@@ -21,7 +21,7 @@ public class ItemController {
     private final ItemRepository itemRepository;
 
     @PostMapping("/item/new")
-    public ResponseEntity create(@RequestBody ItemForm form) {
+    public ResponseEntity newItem(@RequestBody ItemForm form) {
 
         Item item = Item.builder()
                 .name(form.getName())
