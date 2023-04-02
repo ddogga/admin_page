@@ -1,5 +1,6 @@
 package com.admin.shop3.dto;
 
+import com.admin.shop3.entity.state.Role;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,8 @@ public class UserForm {
 
     @Pattern(regexp = "^[a-zA-Z0-9_!@#$%^&*]{5,11}$") //대소문자, 숫자 특수문자를 포함한 6~12자 이하
     private String password;
+
+    private Role role;
 
 
 }

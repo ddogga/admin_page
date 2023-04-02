@@ -18,6 +18,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllTop10ByOrderBySalesQuantityDesc();
 
     List<Item> findAll();
+    List<Item> findAllByOrderByItemStatusDesc();
 
 
 

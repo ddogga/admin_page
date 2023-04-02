@@ -31,16 +31,17 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @PostMapping("/user/admin/new")
+    @PostMapping("/user/new")
     public ResponseEntity create(@RequestBody @Valid UserForm form, BindingResult result) {
 
         if(result.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
         }
 
-        User user = userService.join(form, Role.ADMIN);
+        User user = userService.join(form);
         return ResponseEntity.ok(user);
     }
+
 
     @GetMapping("/user/idcheck")
     public int idCheck(String id) {

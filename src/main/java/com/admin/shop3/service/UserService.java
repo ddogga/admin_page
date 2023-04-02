@@ -28,17 +28,17 @@ public class UserService {
      * 회원 가입
      */
     @Transactional
-    public User join(UserForm form, Role role){
+    public User join(UserForm form){
         validateDuplicateMember(form.getId());
-        User user = buildUser(form, role);
+        User user = buildUser(form);
         return userRepository.save(user);
     }
 
-    private User buildUser(UserForm form, Role role){
+    private User buildUser(UserForm form){
         User user = User.builder()
                 .name(form.getId())
                 .password(form.getPassword())
-                .role(role)
+                .role(form.getRole())
                 .build();
         return user;
     }

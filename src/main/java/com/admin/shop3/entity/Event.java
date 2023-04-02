@@ -39,6 +39,7 @@ public class Event {
     // DTO변환
     public EventResponseDto toDto() {
         return EventResponseDto.builder()
+                .id(this.id)
                 .title(this.title)
                 .description(this.description)
                 .start(this.startDate)

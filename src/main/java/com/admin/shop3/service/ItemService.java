@@ -1,8 +1,10 @@
 package com.admin.shop3.service;
 
 
+import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.entity.User;
+import com.admin.shop3.exception.ItemNotFoundException;
 import com.admin.shop3.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,13 +33,23 @@ public class ItemService {
         return items;
     }
 
+//    @Transactional
+//    public int delete(Long id) {
+//        Optional<Item> item = itemRepository.findById(id);
+//        if(item.isPresent()) {
+//            itemRepository.delete(item.get());
+//            return 1;
+//        }
+//        return 0;
+//    }
+
     @Transactional
-    public int delete(Long id) {
-        Optional<Item> item = itemRepository.findById(id);
-        if(item.isPresent()) {
-            itemRepository.delete(item.get());
-            return 1;
+    public String updateItem(ItemModifyForm form) {
+        Item findItem = itemRepository.findItemById(form.getId());
+        if(findItem == null) {
+            throw new ItemNotFoundException();
         }
-        return 0;
+        findItem.update(form);
+        return "상품 정보 변경";
     }
 }

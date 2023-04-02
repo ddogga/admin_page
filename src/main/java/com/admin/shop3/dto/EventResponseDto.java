@@ -11,6 +11,7 @@ import lombok.Setter;
 @Builder
 public class EventResponseDto {
 
+    private Long id;
     private String title;
     private String description;
     private String start;

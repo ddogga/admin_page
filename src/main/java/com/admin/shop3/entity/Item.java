@@ -1,6 +1,7 @@
 package com.admin.shop3.entity;
 
 
+import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.NotEnoughStockException;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ public class Item {
     /**
      * 상품 단종 여부
      */
+    @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
 
     /**
@@ -75,6 +77,18 @@ public class Item {
 
     public void increaseSales(int quantity){
         this.salesQuantity += quantity;
+    }
+
+
+    /**
+     * update Item
+     */
+    public void update(ItemModifyForm form) {
+        this.name = form.getName();
+        this.price = form.getPrice();
+        this.itemCost = form.getItemCost();
+        this.stockQuantity = form.getStockQuantity();
+        this.itemStatus =form.getItemStatus();
     }
 
 }

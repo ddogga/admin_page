@@ -1,6 +1,7 @@
 package com.admin.shop3.controller;
 
 import com.admin.shop3.dto.ItemForm;
+import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.ItemRepository;
@@ -42,20 +43,30 @@ public class ItemController {
 
     @GetMapping("/items")
     private ResponseEntity getAllItem() {
-        return ResponseEntity.of(Optional.ofNullable(itemRepository.findAll()));
+        return ResponseEntity.of(Optional.ofNullable(itemRepository.findAllByOrderByItemStatusDesc()));
+    }
+
+//    @PutMapping("/item")
+//    public Map<String, Object> updateItem(Long id) {
+//        Map<String, Object> response = new HashMap<>();
+//
+//        if(itemService.delete(id) > 0) {
+//            response.put("result", "SUCCESS");
+//        }else {
+//            response.put("result", "FAIL");
+//            response.put("reason", "일치하는 상품이 없습니다.");
+//        }
+//
+//        return response;
+//    }
+
+    @GetMapping("/item")
+    private ResponseEntity getItem(Long id) {
+        return ResponseEntity.of(Optional.ofNullable(itemRepository.findItemById(id)));
     }
 
     @PutMapping("/item")
-    public Map<String, Object> updateItem(Long id) {
-        Map<String, Object> response = new HashMap<>();
-
-        if(itemService.delete(id) > 0) {
-            response.put("result", "SUCCESS");
-        }else {
-            response.put("result", "FAIL");
-            response.put("reason", "일치하는 상품이 없습니다.");
-        }
-
-        return response;
+    private String modifyItem(@RequestBody ItemModifyForm form) {
+        return itemService.updateItem(form);
     }
 }
