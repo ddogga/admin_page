@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,11 +36,24 @@ public class EventService {
         return "이벤트 등록";
     }
 
-    public List<EventResponseDto> getEvents(EventRequestDto eventRequestDto) {
-        List<Event> events = eventRepository.findEventBetweenMonthWithJPQL(eventRequestDto.getStartDate(),eventRequestDto.getEndDate(),eventRequestDto.getUserName());
+    public List<EventResponseDto> getMonthlyEvents(EventRequestDto eventRequestDto) {
+        List<Event> events = eventRepository.findEventBetweenDateWithJPQL(eventRequestDto.getStartDate(),eventRequestDto.getEndDate(),eventRequestDto.getUserName());
         return events
                 .stream()
                 .map(Event::toDto).toList();
     }
+
+    public List<EventResponseDto> getWeeklyEvents(String userName) {
+        LocalDate now = LocalDate.now();
+        int day = now.getDayOfWeek().getValue();
+        //이번주 일요일 날짜를 가져옴.
+        LocalDate end = LocalDate.of(now.getYear(),now.getMonth(),now.getDayOfMonth() + (7-day));
+        List<Event> events = eventRepository.findEventBetweenDateWithJPQL(now.toString(),end.toString(),userName);
+        return events
+                .stream()
+                .map(Event::toDto).toList();
+    }
+
+
 
 }

@@ -18,4 +18,5 @@ public class EventResponseDto {
     private String end;
     private String backgroundColor;
     private boolean allDay;
+
 }

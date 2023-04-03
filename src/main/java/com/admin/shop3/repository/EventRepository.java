@@ -19,5 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                 "        SUBSTRING(ev.endDate,1,10) BETWEEN :startDate AND :endDate) " +
                 "AND ev.userName = :userName"
     )
-    List<Event> findEventBetweenMonthWithJPQL(String startDate,String endDate, String userName);
+    List<Event> findEventBetweenDateWithJPQL(String startDate,String endDate, String userName);
+
+
+
 }

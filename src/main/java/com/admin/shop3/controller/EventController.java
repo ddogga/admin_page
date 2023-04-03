@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -28,11 +29,11 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity getEvents(EventRequestDto eventRequestDto){
+    public ResponseEntity getMonthlyEvents(EventRequestDto eventRequestDto){
         log.info("start_date: " + eventRequestDto.getStartDate());
         log.info("end_date: " + eventRequestDto.getEndDate());
         log.info("user_name: " + eventRequestDto.getUserName());
-        return ResponseEntity.of(Optional.ofNullable(eventService.getEvents(eventRequestDto)));
+        return ResponseEntity.of(Optional.ofNullable(eventService.getMonthlyEvents(eventRequestDto)));
     }
 
     @DeleteMapping("/event")
@@ -45,5 +46,14 @@ public class EventController {
             log.error("Event Delete Error : " + e.getMessage());
             return "존재하지 않는 이벤트 입니다.";
         }
+    }
+
+    @GetMapping("/events/week")
+    public ResponseEntity getWeeklyEvent (String userName) {
+        LocalDate now = LocalDate.now();
+        int day = now.getDayOfWeek().getValue();
+        //이번주 일요일 날짜를 가져옴.
+        LocalDate end = LocalDate.of(now.getYear(),now.getMonth(),now.getDayOfMonth() + (7-day));
+        return ResponseEntity.of(Optional.ofNullable(eventService.getWeeklyEvents(userName)));
     }
 }
