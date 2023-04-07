@@ -2,6 +2,7 @@ package com.admin.shop3.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,12 @@ public class CancelOrder extends BaseTimeEntity {
     private Order order;
 
     private String reason;
+
+
+    @Builder
+    public CancelOrder(Long id, Order order, String reason) {
+        this.id = id;
+        this.order = order;
+        this.reason = reason;
+    }
 }

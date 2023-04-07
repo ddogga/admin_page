@@ -1,17 +1,12 @@
 package com.admin.shop3.service;
 
 
-import com.admin.shop3.dto.OrderDto;
-import com.admin.shop3.dto.OrderForm;
-import com.admin.shop3.dto.OrderItemForm;
-import com.admin.shop3.dto.OrderStatusUpdateReqDto;
-import com.admin.shop3.entity.Item;
-import com.admin.shop3.entity.Order;
-import com.admin.shop3.entity.OrderItem;
-import com.admin.shop3.entity.User;
+import com.admin.shop3.dto.*;
+import com.admin.shop3.entity.*;
 import com.admin.shop3.entity.state.OrderStatus;
 import com.admin.shop3.exception.OrderNotFountException;
 import com.admin.shop3.exception.UserNotFountException;
+import com.admin.shop3.repository.CancelOrderRepository;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
 import com.admin.shop3.repository.UserRepository;
@@ -34,6 +29,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final CancelOrderRepository cancelOrderRepository;
 
     /**
      * 주문
@@ -97,6 +93,31 @@ public class OrderService {
         return "주문 상태 변경";
     }
 
+    @Transactional
+    public String cancelOrder(OrderCancelReqDto dto) {
+        OrderStatusUpdateReqDto statusDto = createStatusDto(dto);
+        updateStatus(statusDto);
+        CancelOrder cancelOrder = createCancelOrder(dto);
+        cancelOrderRepository.save(cancelOrder);
+
+        return "주문 취소 완료";
+    }
+
+    private OrderStatusUpdateReqDto createStatusDto(OrderCancelReqDto dto) {
+        return OrderStatusUpdateReqDto.builder()
+                .orderId(dto.getOrderId())
+                .status(dto.getStatus())
+                .build();
+    }
+
+    private CancelOrder createCancelOrder(OrderCancelReqDto dto) {
+        Order findOrder = orderRepository.findById(dto.getOrderId())
+                .orElseThrow(OrderNotFountException::new);
+        return CancelOrder.builder()
+                .order(findOrder)
+                .reason(dto.getReason())
+                .build();
+    }
 
 
 
