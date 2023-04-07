@@ -37,12 +37,12 @@ public class ItemController {
     }
 
     @GetMapping("/item/ranking")
-    private ResponseEntity getItemRanking() {
+    public ResponseEntity getItemRanking() {
         return ResponseEntity.of(Optional.ofNullable(itemService.getSalesTop10Items()));
     }
 
     @GetMapping("/items")
-    private ResponseEntity getAllItem() {
+    public ResponseEntity getAllItem() {
         return ResponseEntity.of(Optional.ofNullable(itemRepository.findAllByOrderByItemStatusDesc()));
     }
 
@@ -61,12 +61,12 @@ public class ItemController {
 //    }
 
     @GetMapping("/item")
-    private ResponseEntity getItem(Long id) {
+    public ResponseEntity getItem(Long id) {
         return ResponseEntity.of(Optional.ofNullable(itemRepository.findItemById(id)));
     }
 
     @PutMapping("/item")
-    private String modifyItem(@RequestBody ItemModifyForm form) {
+    public String modifyItem(@RequestBody ItemModifyForm form) {
         return itemService.updateItem(form);
     }
 }

@@ -1,12 +1,16 @@
 package com.admin.shop3.service;
 
 
+import com.admin.shop3.dto.OrderDto;
 import com.admin.shop3.dto.OrderForm;
 import com.admin.shop3.dto.OrderItemForm;
+import com.admin.shop3.dto.OrderStatusUpdateReqDto;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.entity.Order;
 import com.admin.shop3.entity.OrderItem;
 import com.admin.shop3.entity.User;
+import com.admin.shop3.entity.state.OrderStatus;
+import com.admin.shop3.exception.OrderNotFountException;
 import com.admin.shop3.exception.UserNotFountException;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
@@ -75,6 +79,25 @@ public class OrderService {
         }
         return totalPrice;
     }
+
+
+    public List<OrderDto> getOrders() {
+        return orderRepository.findByStatusNot(OrderStatus.CANCEL)
+                .stream()
+                .map(Order::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public String updateStatus(OrderStatusUpdateReqDto dto) {
+        Order findOrder = orderRepository.findById(dto.getOrderId())
+                .orElseThrow(OrderNotFountException::new);
+
+        findOrder.updateStatus(dto.getStatus());
+        return "주문 상태 변경";
+    }
+
+
 
 
 }

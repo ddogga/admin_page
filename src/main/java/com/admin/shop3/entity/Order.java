@@ -1,6 +1,8 @@
 package com.admin.shop3.entity;
 
 
+import com.admin.shop3.dto.OrderDto;
+import com.admin.shop3.dto.OrderItemDto;
 import com.admin.shop3.entity.state.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -20,6 +22,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Table(name = "orders")
 @NoArgsConstructor
+
 public class Order {
 
     @Id
@@ -93,5 +96,31 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
+    }
+
+    // DTO 변환
+    public OrderDto toDto() {
+        return OrderDto.builder()
+                .id(this.id)
+                .userName(this.user.getName())
+                .orderItems(toDtoList())
+                .orderDate(this.orderDate)
+                .orderTime(this.orderTime)
+                .status(this.status)
+                .totalPrice(this.totalPrice)
+                .build();
+    }
+
+    private List<OrderItemDto> toDtoList() {
+        return this.orderItems
+                .stream()
+                .map(OrderItem::toDto).toList();
+    }
+
+    /**
+     * update status
+     */
+    public void updateStatus(OrderStatus status) {
+        this.status = status;
     }
 }

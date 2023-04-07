@@ -1,6 +1,7 @@
 package com.admin.shop3.entity;
 
 
+import com.admin.shop3.dto.OrderItemDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,5 +71,15 @@ public class OrderItem {
 
     public void setOrder(Order order){
         this.order = order;
+    }
+
+    // DTO변환
+    public OrderItemDto toDto() {
+        return OrderItemDto.builder()
+                .id(this.id)
+                .ItemName(this.item.getName())
+                .orderItemPrice(this.orderItemPrice)
+                .count(this.count)
+                .build();
     }
 }
