@@ -119,6 +119,22 @@ public class OrderService {
                 .build();
     }
 
+    public List<CancelOrderDto> getCancelOrders() {
+        return cancelOrderRepository.findAllByOrderByCreatedDateDesc()
+                .stream()
+                .map(CancelOrder::toDto)
+                .toList();
+
+    }
+
+    @Transactional
+    public String updateCancelOrder(CancelOrderUpdateReqDto dto) {
+        CancelOrder findCancelOrder = cancelOrderRepository.findById(dto.getId())
+                .orElseThrow(OrderNotFountException::new);
+
+        findCancelOrder.update(dto.getReason());
+        return "주문취소 사유 변경";
+    }
 
 
 }

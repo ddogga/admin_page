@@ -1,5 +1,6 @@
 package com.admin.shop3.controller;
 
+import com.admin.shop3.dto.CancelOrderUpdateReqDto;
 import com.admin.shop3.dto.OrderCancelReqDto;
 import com.admin.shop3.dto.OrderForm;
 import com.admin.shop3.dto.OrderStatusUpdateReqDto;
@@ -45,6 +46,16 @@ public class OrderController {
     @PutMapping("/order/cancel")
     public String cancelOrder(@RequestBody OrderCancelReqDto dto) {
         return orderService.cancelOrder(dto);
+    }
+
+    @GetMapping("/cancel_orders")
+    public ResponseEntity getCancelOrders() {
+        return ResponseEntity.ok(orderService.getCancelOrders());
+    }
+
+    @PutMapping("/cancel_order")
+    public String updateCancelOrder(@RequestBody CancelOrderUpdateReqDto dto) {
+        return orderService.updateCancelOrder(dto);
     }
 
 

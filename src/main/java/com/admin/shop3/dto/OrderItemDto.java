@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class OrderItemDto {
 
-    private Long id;
+    private Long orderItemId;
     private String ItemName;
     private int orderItemPrice;
     private int count;

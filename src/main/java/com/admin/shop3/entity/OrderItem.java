@@ -76,7 +76,7 @@ public class OrderItem {
     // DTO변환
     public OrderItemDto toDto() {
         return OrderItemDto.builder()
-                .id(this.id)
+                .orderItemId(this.id)
                 .ItemName(this.item.getName())
                 .orderItemPrice(this.orderItemPrice)
                 .count(this.count)
