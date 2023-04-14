@@ -11,6 +11,7 @@ import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
 import com.admin.shop3.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,16 +79,21 @@ public class OrderService {
 
 
     public List<OrderDto> getOrders() {
-        return orderRepository.findByStatusNot(OrderStatus.CANCEL)
+        return orderRepository.findByStatusNotOrderByOrderTimeDesc(OrderStatus.CANCEL)
                 .stream()
                 .map(Order::toDto)
                 .toList();
     }
 
+    public List<OrderItemDto> getOrderItemDtoList(Long id) {
+        Order findOrder =  getOrderById(id);
+
+        return findOrder.getOrderItemDtoList();
+    }
+
     @Transactional
     public String updateStatus(OrderStatusUpdateReqDto dto) {
-        Order findOrder = orderRepository.findById(dto.getOrderId())
-                .orElseThrow(OrderNotFountException::new);
+        Order findOrder = getOrderById(dto.getOrderId());
 
         findOrder.updateStatus(dto.getStatus());
         return "주문 상태 변경";
@@ -111,12 +117,13 @@ public class OrderService {
     }
 
     private CancelOrder createCancelOrder(OrderCancelReqDto dto) {
-        Order findOrder = orderRepository.findById(dto.getOrderId())
+        Order findOrder = getOrderById(dto.getOrderId());
+        return CancelOrder.createCancelOrder(findOrder,dto.getReason());
+    }
+
+    private Order getOrderById(Long id) {
+        return orderRepository.findById(id)
                 .orElseThrow(OrderNotFountException::new);
-        return CancelOrder.builder()
-                .order(findOrder)
-                .reason(dto.getReason())
-                .build();
     }
 
     public List<CancelOrderDto> getCancelOrders() {
@@ -137,4 +144,11 @@ public class OrderService {
     }
 
 
+    public List<OrderDto> getCurrentOrders() {
+        LocalDate now = LocalDate.now();
+        return orderRepository.findCurrentOrdersWithJPQL(now)
+                .stream()
+                .map(Order::toDto)
+                .toList();
+    }
 }

@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -29,22 +31,22 @@ public class CancelOrder extends BaseTimeEntity {
     private String reason;
 
 
+
     @Builder
-    public CancelOrder(Long id, Order order, String reason) {
-        this.id = id;
+    public CancelOrder(Order order, String reason) {
         this.order = order;
         this.reason = reason;
     }
 
     public CancelOrderDto toDto() {
         return CancelOrderDto.builder()
-                .id(this.id)
+                .cancelId(this.id)
+                .orderId(this.order.getId())
                 .userName(this.order.getUser().getName())
                 .orderDate(this.order.getOrderDate())
                 .orderTime(this.order.getOrderTime())
                 .cancelTime(this.getCreatedDate())
                 .totalPrice(this.order.getTotalPrice())
-                .orderItems(toDtoList())
                 .reason(this.reason)
                 .build();
     }
@@ -55,7 +57,28 @@ public class CancelOrder extends BaseTimeEntity {
                 .map(OrderItem::toDto).toList();
     }
 
+
+    // 생성 메서드
+    public static CancelOrder createCancelOrder(Order order, String reason){
+        CancelOrder cancelOrder = CancelOrder.builder()
+                .reason(reason)
+                .build();
+        cancelOrder.setOrder(order);
+        return cancelOrder;
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     * @param order
+     */
+
+    public void setOrder(Order order){
+        this.order = order;
+        order.setCancelOrder(this);
+    }
+
     public void update(String reason) {
         this.reason = reason;
     }
+
 }

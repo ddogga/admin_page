@@ -17,9 +17,10 @@ public class OrderDto {
 
     private Long id;
     private String userName;
-    private List<OrderItemDto> orderItems;
+//    private List<OrderItemDto> orderItems;
     private LocalDate orderDate;
     private LocalTime orderTime;
     private OrderStatus status;
     private int totalPrice;
+    private int elapsedTime;
 }

@@ -14,12 +14,12 @@ import java.util.List;
 @Builder
 public class CancelOrderDto {
 
-    private Long id;
+    private Long cancelId;
+    private Long orderId;
     private String userName;
     private LocalDate orderDate;
     private LocalTime orderTime;
     private LocalDateTime cancelTime;
     private int totalPrice;
-    private List<OrderItemDto> orderItems;
     private String reason;
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +38,13 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrders());
     }
 
+    @GetMapping("/order/items")
+    public ResponseEntity getOrderItems(Long id) {
+        return ResponseEntity.ok(orderService.getOrderItemDtoList(id));
+    }
 
-    @PutMapping("/order_status")
+
+    @PutMapping("/order/status")
     public String updateStatus(@RequestBody OrderStatusUpdateReqDto dto) {
         return orderService.updateStatus(dto);
     }
@@ -48,14 +54,19 @@ public class OrderController {
         return orderService.cancelOrder(dto);
     }
 
-    @GetMapping("/cancel_orders")
+    @GetMapping("/orders/cancel")
     public ResponseEntity getCancelOrders() {
         return ResponseEntity.ok(orderService.getCancelOrders());
     }
 
-    @PutMapping("/cancel_order")
+    @PutMapping("/order/cancel/reason")
     public String updateCancelOrder(@RequestBody CancelOrderUpdateReqDto dto) {
         return orderService.updateCancelOrder(dto);
+    }
+
+    @GetMapping("/orders/now")
+    public ResponseEntity getCurrentOrders() {
+        return ResponseEntity.of(Optional.ofNullable(orderService.getCurrentOrders()));
     }
 
 

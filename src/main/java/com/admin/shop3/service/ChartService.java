@@ -5,6 +5,7 @@ import com.admin.shop3.dto.MonthOrderSum;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class ChartService {
 
     private final OrderRepository orderRepository;
@@ -54,21 +56,21 @@ public class ChartService {
         LocalDate now = LocalDate.now();
         LocalDate start = LocalDate.of(now.getYear()-1,now.getMonthValue()+1,1);
 
+
+
+        log.info("chart start: " + start + " end: " + now);
         List<MonthItemCostSum> monthItemCostSums = itemRepository.findGroupByItemWithJPQL(start,now);
         List<MonthOrderSum> monthOrderSums = new ArrayList<>();
 
         int i = 0;
         if (monthItemCostSums.size() > 0) {
-            monthOrderSums = orderRepository.findGroupByOrderWithJPQL(start,now);
+            monthOrderSums = orderRepository.findGroupByOrderWithJPQL(start, now);
 
-            for(MonthOrderSum orderSum : monthOrderSums) {
+            for (MonthOrderSum orderSum : monthOrderSums) {
                 orderSum.setTotalProfit(monthItemCostSums.get(i).getTotalProfit());
                 i++;
             }
-
         }
-
-
         return monthOrderSums;
     }
 

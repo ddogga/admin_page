@@ -44,6 +44,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private CancelOrder cancelOrder;
+
     // ===========================
 
 
@@ -64,16 +68,17 @@ public class Order {
     private int totalPrice;
 
     @Builder
-    public Order(User user, LocalDate orderDate, LocalTime orderTime, OrderStatus status, int totalPrice) {
+    public Order(User user, LocalDate orderDate, LocalTime orderTime, OrderStatus status, int totalPrice, CancelOrder cancelOrder) {
         this.user = user;
         this.orderDate = orderDate;
         this.orderTime = orderTime;
         this.status = status;
         this.totalPrice = totalPrice;
+        this.cancelOrder = cancelOrder;
     }
 
     // 생성 메서드
-    public static Order createOrder(User user, List<OrderItem> orderItems, int totalPrice) {
+    public static Order createOrder(User user, List<OrderItem> orderItems, int totalPrice ) {
 
         Order order = Order.builder()
                 .user(user)
@@ -82,6 +87,7 @@ public class Order {
                 .orderTime(LocalTime.now())
                 .totalPrice(totalPrice)
                 .build();
+
 
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
@@ -98,12 +104,17 @@ public class Order {
         orderItem.setOrder(this);
     }
 
+    public void setCancelOrder(CancelOrder cancelOrder) {
+        this.cancelOrder = cancelOrder;
+    }
+
+
     // DTO 변환
     public OrderDto toDto() {
         return OrderDto.builder()
                 .id(this.id)
                 .userName(this.user.getName())
-                .orderItems(toDtoList())
+//                .orderItems(toDtoList())
                 .orderDate(this.orderDate)
                 .orderTime(this.orderTime)
                 .status(this.status)
@@ -111,7 +122,7 @@ public class Order {
                 .build();
     }
 
-    private List<OrderItemDto> toDtoList() {
+    public List<OrderItemDto> getOrderItemDtoList() {
         return this.orderItems
                 .stream()
                 .map(OrderItem::toDto).toList();

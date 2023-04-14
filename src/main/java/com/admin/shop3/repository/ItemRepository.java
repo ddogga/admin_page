@@ -27,6 +27,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "SELECT "+
                     " new com.admin.shop3.dto.MonthItemCostSum(month(oi.orderDate), SUM(oi.item.itemCost * oi.count)) " +
                     "FROM OrderItem oi " +
+                    "WHERE oi.order.status = 'FINISH' " +
                     "GROUP BY month(oi.orderDate) " +
                     "HAVING oi.orderDate BETWEEN :start AND :end"
     )
