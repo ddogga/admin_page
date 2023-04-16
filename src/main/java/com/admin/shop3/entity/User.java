@@ -1,5 +1,6 @@
 package com.admin.shop3.entity;
 
+import com.admin.shop3.dto.UserResDto;
 import com.admin.shop3.entity.state.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,5 +28,17 @@ public class User extends BaseTimeEntity{
         this.name = name;
         this.password = password;
         this.role = role;
+    }
+
+
+    public UserResDto toResDto() {
+        UserResDto dto = UserResDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .createDate(this.getCreatedDate())
+                .role(this.role)
+                .build();
+
+        return dto;
     }
 }

@@ -2,7 +2,6 @@ package com.admin.shop3.controller;
 
 
 
-import com.admin.shop3.dto.GetUserResponseDto;
 import com.admin.shop3.dto.LoginForm;
 import com.admin.shop3.dto.UserForm;
 import com.admin.shop3.entity.User;
@@ -13,11 +12,13 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,13 +65,12 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/role_users")
-    public ResponseEntity getUsers(String role){
-        GetUserResponseDto getUserResponseDto = new GetUserResponseDto();
-        if (role.equals("user")) {
-            return ResponseEntity.ok(userRepository.findAllByRole(Role.USER));
-        }
-        return ResponseEntity.ok(userRepository.findAllByRole(Role.ADMIN));
+    @GetMapping("/users")
+    public ResponseEntity getUsers(@RequestParam int page, int size){
+        log.info("page : " + page + " size : " + size);
+        PageRequest pageRequest = PageRequest.of(page, size);
+            return ResponseEntity.ok(userService.getUserPageList(pageRequest));
+
     }
 
     @DeleteMapping("/user")
@@ -83,7 +83,6 @@ public class UserController {
             response.put("result", "FAIL");
             response.put("reason", "일치하는 회원 정보가 없습니다. 사용자 id를 확인해주세요.");
         }
-
         return response;
     }
 

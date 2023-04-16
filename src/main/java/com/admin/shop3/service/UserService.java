@@ -1,18 +1,18 @@
 package com.admin.shop3.service;
 
 
-import com.admin.shop3.dto.LoginForm;
-import com.admin.shop3.dto.SessionUser;
-import com.admin.shop3.dto.UserForm;
+import com.admin.shop3.dto.*;
 import com.admin.shop3.entity.User;
 import com.admin.shop3.entity.state.Role;
 import com.admin.shop3.exception.UserDuplicationException;
 import com.admin.shop3.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +74,21 @@ public class UserService {
             return 1;
         }
         return 0;
+    }
+
+    public UserListResDto getUserPageList(Pageable pageable) {
+        return UserListResDto.builder()
+                .userList(getUsers(pageable))
+                .count(userRepository.getUserRoleCount())
+                .build();
+    }
+
+
+    private Page<UserResDto> getUsers(Pageable pageable) {
+
+        return userRepository.findAllByRoleOrderByIdDesc(Role.USER,pageable)
+                .map(User::toResDto);
+
     }
 
 
