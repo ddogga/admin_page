@@ -19,7 +19,7 @@ public class CancelOrderDto {
     private String userName;
     private LocalDate orderDate;
     private LocalTime orderTime;
-    private LocalDateTime cancelTime;
+    private String cancelTime;
     private int totalPrice;
     private String reason;
 }

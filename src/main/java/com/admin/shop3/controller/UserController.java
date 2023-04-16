@@ -69,7 +69,7 @@ public class UserController {
     public ResponseEntity getUsers(@RequestParam int page, int size){
         log.info("page : " + page + " size : " + size);
         PageRequest pageRequest = PageRequest.of(page, size);
-            return ResponseEntity.ok(userService.getUserPageList(pageRequest));
+            return ResponseEntity.ok(userService.getUsers(pageRequest));
 
     }
 

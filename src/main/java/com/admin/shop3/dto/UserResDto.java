@@ -16,6 +16,6 @@ public class UserResDto {
 
     private Long id;
     private String name;
-    private LocalDateTime createDate;
+    private String createDate;
     private Role role;
 }

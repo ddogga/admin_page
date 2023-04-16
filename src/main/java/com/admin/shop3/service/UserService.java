@@ -76,15 +76,9 @@ public class UserService {
         return 0;
     }
 
-    public UserListResDto getUserPageList(Pageable pageable) {
-        return UserListResDto.builder()
-                .userList(getUsers(pageable))
-                .count(userRepository.getUserRoleCount())
-                .build();
-    }
 
 
-    private Page<UserResDto> getUsers(Pageable pageable) {
+    public Page<UserResDto> getUsers(Pageable pageable) {
 
         return userRepository.findAllByRoleOrderByIdDesc(Role.USER,pageable)
                 .map(User::toResDto);
