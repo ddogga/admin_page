@@ -1,15 +1,18 @@
 package com.admin.shop3.service;
 
 
+import com.admin.shop3.dto.ItemDto;
 import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.entity.User;
 import com.admin.shop3.exception.ItemNotFoundException;
 import com.admin.shop3.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +34,12 @@ public class ItemService {
         List<Item> items = itemRepository.findAllTop10ByOrderBySalesQuantityDesc();
 
         return items;
+    }
+
+    public Page<ItemDto> getItems(Pageable pageable) {
+
+        return itemRepository.findAllByOrderByIdDesc(pageable)
+                .map(Item::toDto);
     }
 
 //    @Transactional

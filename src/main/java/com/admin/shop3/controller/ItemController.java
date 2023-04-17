@@ -7,6 +7,7 @@ import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
 
-    @PostMapping("/item/new")
+    @PostMapping("/item")
     public ResponseEntity newItem(@RequestBody ItemForm form) {
 
         Item item = Item.builder()
@@ -42,8 +43,9 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public ResponseEntity getAllItem() {
-        return ResponseEntity.of(Optional.ofNullable(itemRepository.findAllByOrderByItemStatusDesc()));
+    public ResponseEntity getAllItem(@RequestParam int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.of(Optional.ofNullable(itemService.getItems(pageRequest)));
     }
 
 //    @PutMapping("/item")
@@ -61,7 +63,8 @@ public class ItemController {
 //    }
 
     @GetMapping("/item")
-    public ResponseEntity getItem(Long id) {
+    public ResponseEntity getItem(@RequestParam Long id) {
+
         return ResponseEntity.of(Optional.ofNullable(itemRepository.findItemById(id)));
     }
 

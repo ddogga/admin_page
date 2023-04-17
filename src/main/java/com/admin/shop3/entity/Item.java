@@ -1,6 +1,7 @@
 package com.admin.shop3.entity;
 
 
+import com.admin.shop3.dto.ItemDto;
 import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.state.ItemStatus;
 import com.admin.shop3.repository.NotEnoughStockException;
@@ -89,6 +90,18 @@ public class Item {
         this.itemCost = form.getItemCost();
         this.stockQuantity = form.getStockQuantity();
         this.itemStatus =form.getItemStatus();
+    }
+
+
+    public ItemDto toDto() {
+        return ItemDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .price(this.price)
+                .itemCost(this.itemCost)
+                .itemStatus(this.itemStatus)
+                .stockQuantity(this.stockQuantity)
+                .build();
     }
 
 }

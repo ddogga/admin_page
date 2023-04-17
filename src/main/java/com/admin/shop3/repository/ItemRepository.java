@@ -3,6 +3,8 @@ package com.admin.shop3.repository;
 import com.admin.shop3.dto.MonthItemCostSum;
 import com.admin.shop3.entity.Item;
 import com.admin.shop3.entity.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllTop10ByOrderBySalesQuantityDesc();
 
     List<Item> findAll();
+
     List<Item> findAllByOrderByItemStatusDesc();
+
+    Page<Item> findAllByOrderByIdDesc(Pageable pageable);
 
 
 
