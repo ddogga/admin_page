@@ -11,6 +11,8 @@ import com.admin.shop3.repository.ItemRepository;
 import com.admin.shop3.repository.OrderRepository;
 import com.admin.shop3.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,11 +80,9 @@ public class OrderService {
     }
 
 
-    public List<OrderDto> getOrders() {
-        return orderRepository.findByStatusNotOrderByOrderTimeDesc(OrderStatus.CANCEL)
-                .stream()
-                .map(Order::toDto)
-                .toList();
+    public Page<OrderDto> getOrders(Pageable pageable) {
+        return orderRepository.findByStatusNotOrderByOrderTimeDesc(OrderStatus.CANCEL,pageable)
+                .map(Order::toDto);
     }
 
     public List<OrderItemDto> getOrderItemDtoList(Long id) {
@@ -126,11 +126,9 @@ public class OrderService {
                 .orElseThrow(OrderNotFountException::new);
     }
 
-    public List<CancelOrderDto> getCancelOrders() {
-        return cancelOrderRepository.findAllByOrderByCreatedDateDesc()
-                .stream()
-                .map(CancelOrder::toDto)
-                .toList();
+    public Page<CancelOrderDto> getCancelOrders(Pageable pageable) {
+        return cancelOrderRepository.findAllByOrderByCreatedDateDesc(pageable)
+                .map(CancelOrder::toDto);
 
     }
 

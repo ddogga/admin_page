@@ -3,6 +3,8 @@ package com.admin.shop3.repository;
 import com.admin.shop3.dto.MonthOrderSum;
 import com.admin.shop3.entity.Order;
 import com.admin.shop3.entity.state.OrderStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,7 +33,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 
 
-    List<Order> findByStatusNotOrderByOrderTimeDesc(OrderStatus orderStatus);
+    Page<Order> findByStatusNotOrderByOrderTimeDesc(OrderStatus orderStatus, Pageable pageable);
 
 
     @Query(value =

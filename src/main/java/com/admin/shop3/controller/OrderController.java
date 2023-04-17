@@ -10,6 +10,7 @@ import com.admin.shop3.service.ItemService;
 import com.admin.shop3.service.OrderService;
 import com.admin.shop3.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity getOrders() {
-        return ResponseEntity.ok(orderService.getOrders());
+    public ResponseEntity getOrders(@RequestParam int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(orderService.getOrders(pageRequest));
     }
 
     @GetMapping("/order/items")
@@ -55,8 +57,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/cancel")
-    public ResponseEntity getCancelOrders() {
-        return ResponseEntity.ok(orderService.getCancelOrders());
+    public ResponseEntity getCancelOrders(@RequestParam int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(orderService.getCancelOrders(pageRequest));
     }
 
     @PutMapping("/order/cancel/reason")
