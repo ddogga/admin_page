@@ -52,6 +52,9 @@ public class Order {
 
 
     // ======== 주문 시간 ===========
+
+    @Column(nullable = true)
+    private int orderMonth;
     @Column(name = "order_date")
     private LocalDate orderDate;
 
@@ -68,8 +71,9 @@ public class Order {
     private int totalPrice;
 
     @Builder
-    public Order(User user, LocalDate orderDate, LocalTime orderTime, OrderStatus status, int totalPrice, CancelOrder cancelOrder) {
+    public Order(User user, int orderMonth, LocalDate orderDate, LocalTime orderTime, OrderStatus status, int totalPrice, CancelOrder cancelOrder) {
         this.user = user;
+        this.orderMonth = orderMonth;
         this.orderDate = orderDate;
         this.orderTime = orderTime;
         this.status = status;
@@ -83,6 +87,7 @@ public class Order {
         Order order = Order.builder()
                 .user(user)
                 .status(OrderStatus.ORDER)
+                .orderMonth(LocalDate.now().getMonthValue())
                 .orderDate(LocalDate.now())
                 .orderTime(LocalTime.now())
                 .totalPrice(totalPrice)

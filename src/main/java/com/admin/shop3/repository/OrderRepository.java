@@ -23,11 +23,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value =
             "SELECT "+
-                    " new com.admin.shop3.dto.MonthOrderSum(month(or.orderDate),COUNT(or.id),SUM(or.totalPrice)) " +
+                    " new com.admin.shop3.dto.MonthOrderSum(or.orderMonth,COUNT(or.id),SUM(or.totalPrice)) " +
                     "FROM Order or " +
                     "WHERE or.status = 'FINISH' " +
-                    "GROUP BY month(or.orderDate) " +
-                    "HAVING or.orderDate BETWEEN :start AND :end"
+                    "AND or.orderDate BETWEEN :start AND :end " +
+                    "GROUP BY or.orderMonth "
     )
     List<MonthOrderSum> findGroupByOrderWithJPQL(LocalDate start, LocalDate end);
 

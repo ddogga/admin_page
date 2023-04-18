@@ -31,7 +31,7 @@ public class ItemService {
 
     public List<Item> getSalesTop10Items () {
 
-        List<Item> items = itemRepository.findAllTop10ByOrderBySalesQuantityDesc();
+        List<Item> items = itemRepository.findTop10ByOrderBySalesQuantityDesc();
 
         return items;
     }

@@ -23,7 +23,7 @@ public class EventController {
     private final EventService eventService;
     private final EventRepository eventRepository;
 
-    @PostMapping("/event/new")
+    @PostMapping("/event")
     public String newEvent(@RequestBody EventForm eventForm) {
         return eventService.saveEvent(eventForm);
     }

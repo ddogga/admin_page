@@ -34,24 +34,17 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    // ======== 주문 시간 ===========
-    @Column(name = "order_date")
-    private LocalDate orderDate;
-
-    @Column(name = "order_time")
-    private LocalTime orderTime;
 
 
     // =============================
 
     @Builder
-    public OrderItem(int orderItemPrice, int count, Order order, Item item, LocalDate orderDate, LocalTime orderTime) {
+    public OrderItem(int orderItemPrice, int count, Order order, Item item) {
         this.orderItemPrice = orderItemPrice;
         this.count = count;
         this.order = order;
         this.item = item;
-        this.orderDate = orderDate;
-        this.orderTime = orderTime;
+
     }
 
     //생성 메서드
@@ -60,8 +53,6 @@ public class OrderItem {
                 .item(item)
                 .orderItemPrice(orderPrice)
                 .count(count)
-                .orderDate(LocalDate.now())
-                .orderTime(LocalTime.now())
                 .build();
 
         item.removeStock(count); //주문 들어온 수량 만큼 재고에서 빼기

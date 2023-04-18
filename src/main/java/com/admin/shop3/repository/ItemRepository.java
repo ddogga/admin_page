@@ -17,7 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Item findItemById(Long id);
 
-    List<Item> findAllTop10ByOrderBySalesQuantityDesc();
+    List<Item> findTop10ByOrderBySalesQuantityDesc();
 
     List<Item> findAll();
 
@@ -29,12 +29,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
     @Query(value =
+
             "SELECT "+
-                    " new com.admin.shop3.dto.MonthItemCostSum(month(oi.orderDate), SUM(oi.item.itemCost * oi.count)) " +
+                    "new com.admin.shop3.dto.MonthItemCostSum(oi.order.orderMonth, SUM(oi.item.itemCost * oi.count)) " +
                     "FROM OrderItem oi " +
                     "WHERE oi.order.status = 'FINISH' " +
-                    "GROUP BY month(oi.orderDate) " +
-                    "HAVING oi.orderDate BETWEEN :start AND :end"
+                    "AND oi.order.orderDate BETWEEN :start AND :end " +
+                    "GROUP BY oi.order.orderMonth "
     )
     List<MonthItemCostSum> findGroupByItemWithJPQL(LocalDate start, LocalDate end);
 }

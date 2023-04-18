@@ -14,7 +14,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     @Query(value =
         "SELECT oi "+
                 "FROM OrderItem oi " +
-                "WHERE month(oi.orderDate) = :month"
+                "WHERE month(oi.order.orderDate) = :month"
     )
     List<OrderItem> findAllByMonth(int month);
 }
