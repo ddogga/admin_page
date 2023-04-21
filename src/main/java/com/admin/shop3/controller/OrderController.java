@@ -28,7 +28,7 @@ public class OrderController {
     private final ItemService itemService;
 
 
-    @PostMapping("/order/new")
+    @PostMapping("/order")
     public String order(@RequestBody OrderForm orderForm) {
 
         return orderService.order(orderForm);

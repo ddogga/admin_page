@@ -34,6 +34,14 @@
 </p>
 <br>
 
+<div><h3>🍊 화면단 구현 리포지토리</h3></div>
+
+: [https://github.com/ddogga/mng_page_front](https://github.com/ddogga/mng_page_front)
+
+<br>
+<br>
+<br>
+
 <div><h3>💻 학습 목표</h3></div>
 
 - 엔티티 연관관계 이해하기

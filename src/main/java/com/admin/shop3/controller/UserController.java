@@ -32,7 +32,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @PostMapping("/user/new")
+    @PostMapping("/user")
     public ResponseEntity create(@RequestBody @Valid UserForm form, BindingResult result) {
 
         if(result.hasErrors()) {
