@@ -4,13 +4,11 @@ package com.admin.shop3.entity;
 import com.admin.shop3.dto.ItemDto;
 import com.admin.shop3.dto.ItemModifyForm;
 import com.admin.shop3.entity.state.ItemStatus;
-import com.admin.shop3.repository.NotEnoughStockException;
+import com.admin.shop3.exception.NotEnoughStockException;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter

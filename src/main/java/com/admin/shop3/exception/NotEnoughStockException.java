@@ -1,4 +1,4 @@
-package com.admin.shop3.repository;
+package com.admin.shop3.exception;
 
 public class NotEnoughStockException extends RuntimeException{
 

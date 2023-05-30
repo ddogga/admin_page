@@ -20,16 +20,17 @@ public class User extends BaseTimeEntity{
     @Column(unique = true)
     private  String name;
     private  String password;
+    private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    public User(String name, String password, Role role) {
+    public User(String name, String password, String email, Role role) {
         this.name = name;
         this.password = password;
+        this.email = email;
         this.role = role;
     }
-
 
     public UserResDto toResDto() {
         UserResDto dto = UserResDto.builder()
@@ -38,7 +39,6 @@ public class User extends BaseTimeEntity{
                 .createDate(this.getCreatedDate())
                 .role(this.role)
                 .build();
-
         return dto;
     }
 }
